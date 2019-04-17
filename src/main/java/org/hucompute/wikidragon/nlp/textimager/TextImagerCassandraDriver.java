@@ -37,104 +37,104 @@ public class TextImagerCassandraDriver {
     }
 
     public static void main(String[] args) throws Exception {
-        if (args.length == 0) printSyntax();
-        String lKeyspace = null;
-        String lUser = null;
-        String lPassword = null;
-        String lHost = null;
-        String lDBName = null;
-        ProcessingState lProcessingState = null;
-        boolean lSkipZero = false;
-        int lPoolMaxBytes = 0;
-        String lCommand = args[0];
-        File lTargetDir = null;
-        File lLogFile = null;
-        for (int i=1; i<args.length; i++) {
-            switch (args[i]) {
-                case "-ks": {
-                    lKeyspace = args[++i];
-                    break;
-                }
-                case "-u": {
-                    lUser = args[++i];
-                    break;
-                }
-                case "-p": {
-                    lPassword = args[++i];
-                    break;
-                }
-                case "-h": {
-                    lHost = args[++i];
-                    break;
-                }
-                case "-db": {
-                    lDBName = args[++i];
-                    break;
-                }
-                case "-state": {
-                    switch (args[++i]) {
-                        case "all": {
-                            lProcessingState = ProcessingState.ANY;
-                            break;
-                        }
-                        case "untagged": {
-                            lProcessingState = ProcessingState.UNPROCESSED;
-                            break;
-                        }
-                        case "tagged": {
-                            lProcessingState = ProcessingState.PROCESSED;
-                            break;
-                        }
-                    }
-                    break;
-                }
-                case "-pkb": {
-                    lPoolMaxBytes = Integer.parseInt(args[++i]) * 1024;
-                    break;
-                }
-                case "-d": {
-                    lTargetDir = new File(args[++i]);
-                    break;
-                }
-                case "-log": {
-                    lLogFile = new File(args[++i]);
-                    break;
-                }
-                case "-sz": {
-                    lSkipZero = true;
-                    break;
-                }
-            }
-        }
-        boolean lPoolDocs = lPoolMaxBytes > 0;
-        switch (lCommand) {
-            case "exportfs": {
-                JCas lJcas = JCasFactory.createJCas("HtmlTagTypeSystemDescriptor");
-                try (WikiDragonCassandraCollectionReader lReader = new WikiDragonCassandraCollectionReader(lKeyspace, lUser, lPassword, new String[]{lHost}, lDBName, lProcessingState, lSkipZero, lPoolDocs, lPoolMaxBytes)) {
-                    int lDocCounter = 1;
-                    while (lReader.hasNext()) {
-                        lReader.getNext(lJcas.getCas());
-                        XmiCasSerializer lXmiCasSerializer = new XmiCasSerializer(lJcas.getTypeSystem());
-                        FileOutputStream lOutputStream = new FileOutputStream(new File(lTargetDir + File.separator + lDocCounter + ".xmi"));
-                        lXmiCasSerializer.serialize(lJcas.getCas(), lOutputStream);
-                        lOutputStream.flush();
-                        lOutputStream.close();
-                        System.out.println("Exported Documents: " + lReader.getPooledDocumentsRead() + ", Effectively exported Documents: " + lReader.getDocumentsRead());
-                        lDocCounter++;
-                    }
-                }
-                break;
-            }
-            case "countdocs": {
-                try (WikiDragonCassandraDocumentKeyIterator lReader = new WikiDragonCassandraDocumentKeyIterator(lKeyspace, lUser, lPassword, new String[]{lHost}, lDBName, lProcessingState, lSkipZero)) {
-                    while (lReader.hasNext()) {
-                        lReader.next();
-                        System.out.println("Fetched Documents: " + lReader.getDocumentsRead());
-                    }
-                }
-                break;
-            }
-        }
+//        if (args.length == 0) printSyntax();
+//        String lKeyspace = null;
+//        String lUser = null;
+//        String lPassword = null;
+//        String lHost = null;
+//        String lDBName = null;
+//        ProcessingState lProcessingState = null;
+//        boolean lSkipZero = false;
+//        int lPoolMaxBytes = 0;
+//        String lCommand = args[0];
+//        File lTargetDir = null;
+//        File lLogFile = null;
+//        for (int i=1; i<args.length; i++) {
+//            switch (args[i]) {
+//                case "-ks": {
+//                    lKeyspace = args[++i];
+//                    break;
+//                }
+//                case "-u": {
+//                    lUser = args[++i];
+//                    break;
+//                }
+//                case "-p": {
+//                    lPassword = args[++i];
+//                    break;
+//                }
+//                case "-h": {
+//                    lHost = args[++i];
+//                    break;
+//                }
+//                case "-db": {
+//                    lDBName = args[++i];
+//                    break;
+//                }
+//                case "-state": {
+//                    switch (args[++i]) {
+//                        case "all": {
+//                            lProcessingState = ProcessingState.ANY;
+//                            break;
+//                        }
+//                        case "untagged": {
+//                            lProcessingState = ProcessingState.UNPROCESSED;
+//                            break;
+//                        }
+//                        case "tagged": {
+//                            lProcessingState = ProcessingState.PROCESSED;
+//                            break;
+//                        }
+//                    }
+//                    break;
+//                }
+//                case "-pkb": {
+//                    lPoolMaxBytes = Integer.parseInt(args[++i]) * 1024;
+//                    break;
+//                }
+//                case "-d": {
+//                    lTargetDir = new File(args[++i]);
+//                    break;
+//                }
+//                case "-log": {
+//                    lLogFile = new File(args[++i]);
+//                    break;
+//                }
+//                case "-sz": {
+//                    lSkipZero = true;
+//                    break;
+//                }
+//            }
+//        }
+//        boolean lPoolDocs = lPoolMaxBytes > 0;
+//        switch (lCommand) {
+//            case "exportfs": {
+//                JCas lJcas = JCasFactory.createJCas("HtmlTagTypeSystemDescriptor");
+//                try (WikiDragonCassandraCollectionReader lReader = new WikiDragonCassandraCollectionReader(lKeyspace, lUser, lPassword, new String[]{lHost}, lDBName, lProcessingState, lSkipZero, lPoolDocs, lPoolMaxBytes)) {
+//                    int lDocCounter = 1;
+//                    while (lReader.hasNext()) {
+//                        lReader.getNext(lJcas.getCas());
+//                        XmiCasSerializer lXmiCasSerializer = new XmiCasSerializer(lJcas.getTypeSystem());
+//                        FileOutputStream lOutputStream = new FileOutputStream(new File(lTargetDir + File.separator + lDocCounter + ".xmi"));
+//                        lXmiCasSerializer.serialize(lJcas.getCas(), lOutputStream);
+//                        lOutputStream.flush();
+//                        lOutputStream.close();
+//                        System.out.println("Exported Documents: " + lReader.getPooledDocumentsRead() + ", Effectively exported Documents: " + lReader.getDocumentsRead());
+//                        lDocCounter++;
+//                    }
+//                }
+//                break;
+//            }
+//            case "countdocs": {
+//                try (WikiDragonCassandraDocumentKeyIterator lReader = new WikiDragonCassandraDocumentKeyIterator(lKeyspace, lUser, lPassword, new String[]{lHost}, lDBName, lProcessingState, lSkipZero)) {
+//                    while (lReader.hasNext()) {
+//                        lReader.next();
+//                        System.out.println("Fetched Documents: " + lReader.getDocumentsRead());
+//                    }
+//                }
+//                break;
+//            }
+//        }
     }
 
 }
